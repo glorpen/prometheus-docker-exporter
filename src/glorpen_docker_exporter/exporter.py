@@ -36,7 +36,7 @@ def iter_stats(*mods):
 
 
 class Exporter:
-    def __init__(self):
+    def __init__(self, sysfs_path: str = "/sys"):
         super(Exporter, self).__init__()
 
         self.registry = OnDemandCollectorRegistry(auto_describe=True)
@@ -49,7 +49,7 @@ class Exporter:
         self._stats_metrics = list(iter_stats(metrics_stats, metrics_memory, metrics_network))
         self._blkio_metrics = list(iter_stats(metrics_blkio))
 
-        self._device_finder = DeviceNameFinder()
+        self._device_finder = DeviceNameFinder(sysfs_path)
 
         self._container_labels = ['name', 'image', 'id', 'image_id']
 

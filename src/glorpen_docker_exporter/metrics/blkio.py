@@ -7,16 +7,17 @@ from glorpen_docker_exporter.metrics import Stat
 
 
 class DeviceNameFinder:
-    def __init__(self):
+    def __init__(self, sysfs_path: str):
         super(DeviceNameFinder, self).__init__()
         self._device_cache: typing.Dict[str, str] = {}
+        self._sysfs_path = sysfs_path
 
     def find(self, major: int, minor: int):
         key = f"{major}:{minor}"
         if key in self._device_cache:
             return self._device_cache[key]
 
-        with open(f"/sys/dev/block/{major}:{minor}/uevent", "rt") as f:
+        with open(f"{self._sysfs_path}/dev/block/{major}:{minor}/uevent", "rt") as f:
             data = f.read()
 
         for line in data.splitlines(keepends=False):
