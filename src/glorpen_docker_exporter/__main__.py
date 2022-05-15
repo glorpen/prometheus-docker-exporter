@@ -8,9 +8,9 @@ from glorpen_docker_exporter.exporter import Exporter
 metrics._use_created = False
 
 p = argparse.ArgumentParser(prog="glorpen-docker-exporter")
-p.add_argument("-a", "--addr", default='0.0.0.0')
-p.add_argument("-p", "--port", default=8080, type=int)
-p.add_argument("--sysfs", "-s", default="/sys")
+p.add_argument("-a", "--addr", default='0.0.0.0', help="address to lsiten on, defaults to 0.0.0.0")
+p.add_argument("-p", "--port", default=8080, type=int, help="port to listen on, defaults to 8080")
+p.add_argument("--sysfs", "-s", default="/sys", help="path to sysfs to use, defaults to /sys")
 
 ns = p.parse_args()
 
