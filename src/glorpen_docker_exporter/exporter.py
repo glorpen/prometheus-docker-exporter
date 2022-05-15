@@ -8,7 +8,8 @@ from docker.models.containers import Container
 from prometheus_client import CollectorRegistry, Metric, make_wsgi_app
 from prometheus_client.metrics import MetricWrapperBase
 
-from glorpen_docker_exporter.metrics import Stat, blkio as metrics_blkio, container as metrics_container, stats as metrics_stats, memory as metrics_memory
+from glorpen_docker_exporter.metrics import Stat, blkio as metrics_blkio, container as metrics_container, \
+    memory as metrics_memory, network as metrics_network, stats as metrics_stats
 from glorpen_docker_exporter.metrics.blkio import BlkioStats, DeviceNameFinder
 
 
@@ -25,12 +26,14 @@ class SilentHandler(WSGIRequestHandler):
     def log_message(self, *args):
         pass
 
+
 def iter_stats(*mods):
     for mod in mods:
         for name in dir(mod):
             v = getattr(mod, name)
             if isinstance(v, Stat):
                 yield v
+
 
 class Exporter:
     def __init__(self):
@@ -43,7 +46,7 @@ class Exporter:
         self._registered_metrics: typing.Dict[Stat, MetricWrapperBase] = {}
 
         self._container_metrics = list(iter_stats(metrics_container))
-        self._stats_metrics = list(iter_stats(metrics_stats, metrics_memory))
+        self._stats_metrics = list(iter_stats(metrics_stats, metrics_memory, metrics_network))
         self._blkio_metrics = list(iter_stats(metrics_blkio))
 
         self._device_finder = DeviceNameFinder()
@@ -55,8 +58,6 @@ class Exporter:
             self._stats_metrics,
             self._blkio_metrics
         )
-
-        # self.stats_memory_max_usage = self._add_metric(Counter('container_mem_max_usage_bytes', "", container_labels))
 
     def _register_metrics(self, *items):
         for stat in itertools.chain(*items):
