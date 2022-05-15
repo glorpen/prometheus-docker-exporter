@@ -1,4 +1,5 @@
 import itertools
+import textwrap
 import typing
 
 T = typing.TypeVar('T')
@@ -23,13 +24,13 @@ class Stat:
 
     @property
     def description(self):
-        return self._f.__doc__
+        return textwrap.dedent(self._f.__doc__).replace("\n", " ").strip(" ")
 
     @property
     def name(self):
         return self._f.__name__
 
-    def update(self, metric: T, data: dict, labels):
+    def update(self, metric: T, data, labels):
         if self.labels:
             self._f(metric=metric, labels=labels, data=data)
         else:
