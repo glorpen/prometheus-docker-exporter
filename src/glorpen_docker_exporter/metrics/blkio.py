@@ -52,69 +52,69 @@ class BlkioStats:
 
 @Stat(labels=["device"])
 def container_blkio_reads_bytes_total(metric: Counter, labels: dict, data: BlkioStats):
-    """Total bytes read by the container from device"""
+    """Bytes read."""
     for item in data.iter("io_service_bytes_recursive", "read"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_writes_bytes_total(metric: Counter, labels: dict, data: BlkioStats):
-    """Bytes written by the container"""
+    """Bytes written."""
     for item in data.iter("io_service_bytes_recursive", "write"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_async_bytes_total(metric: Counter, labels: dict, data: BlkioStats):
-    """"""
+    """Bytes asynced."""
     for item in data.iter("io_service_bytes_recursive", "async"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_sync_bytes_total(metric: Counter, labels: dict, data: BlkioStats):
-    """"""
+    """Bytes synced."""
     for item in data.iter("io_service_bytes_recursive", "sync"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_discard_bytes_total(metric: Counter, labels: dict, data: BlkioStats):
-    """"""
+    """Bytes discarded."""
     for item in data.iter("io_service_bytes_recursive", "discard"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_reads_total(metric: Counter, labels: dict, data: BlkioStats):
-    """Count of read operations performed, regardless of size"""
+    """Count of read operations performed, regardless of size."""
     for item in data.iter("io_serviced_recursive", "read"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_writes_total(metric: Counter, labels: dict, data: BlkioStats):
-    """Count of write operations performed, regardless of size"""
+    """Count of write operations performed, regardless of size."""
     for item in data.iter("io_serviced_recursive", "write"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_async_total(metric: Counter, labels: dict, data: BlkioStats):
-    """"""
+    """Count of async operations performed, regardless of size"""
     for item in data.iter("io_serviced_recursive", "async"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_sync_total(metric: Counter, labels: dict, data: BlkioStats):
-    """"""
+    """Count of sync operations performed, regardless of size"""
     for item in data.iter("io_serviced_recursive", "sync"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
 
 
 @Stat(labels=["device"])
 def container_blkio_discard_total(metric: Counter, labels: dict, data: BlkioStats):
-    """"""
+    """Count of discard operations performed, regardless of size"""
     for item in data.iter("io_serviced_recursive", "discard"):
         metric.labels(device=item["device"], **labels).inc(item["value"])
